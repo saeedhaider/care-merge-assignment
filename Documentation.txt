@@ -1,0 +1,107 @@
+
+========================================= TASK 1 RESTFull APIs==================================
+
+Example Req/Res objects for GET/POST endpoints for user
+
+Create User
+=> POST, http://localhost:3001/users, Create User
+
+Example Req Object
+{
+    "name": "Amir Raza Haider",
+    "email": "amir-raza@gmail.com",
+    "age": 25
+}
+
+Example Res Object
+{
+    "name": "Amir Raza Haider",
+    "email": "amir-raza@gmail.com",
+    "age": 25,
+    "userId": 3
+}
+
+Get All Users
+=> GET, http://localhost:3001/users, Get Users
+Example Res Object
+[
+    {
+        "userId": 1,
+        "name": "John Doe",
+        "email": "johndoe@example.com",
+        "age": 30
+    },
+    {
+        "userId": 2,
+        "name": "Saeed Haider",
+        "email": "saeedhaider000@gmail.com",
+        "age": 28
+    },
+    {
+        "userId": 3,
+        "name": "Amir Raza Haider",
+        "email": "amir-raza@gmail.com",
+        "age": 25
+    }
+]
+
+
+========================================= TASK 2 Raw Queries==================================
+
+1) Write a query to retrieve all users over the age of 18, sorted by name in
+ascending order.
+
+SELECT * from USER WHERE age > 18 ORDER BY name ASC
+
+
+2) Briefly explain any indexes or optimizations you would add for better
+performance.
+
+We have email, name and age columns
+Combine index on age and name will result in better performance
+Index on age column as well for only age related queries will be helpful in bette performance
+Email is already having a unique constraint on it, result in a unique index automatically
+user_id is PK, hence already indexed.
+
+
+========================================= TASK 3 Simulation of RabbitMQ ==================================
+
+Question: Simulate sending a welcome message to a user when they sign up
+
+1) I am usign RabbitMQ, i installed its server on localhost at address amqp://localhost
+
+2) I made it a standalone module and imported in User.module,
+
+3) RabbitMQ service is injectable which mean it can be added as dependency injection in any service where needed
+
+4) I have attached teh working screen shots of welcome messages in email for verification of this task.
+
+5) First check if email not already taken, then create a user and send a packet to queue
+   there is a consumer constantly reading from queue top, as there is any insertion in queue
+
+6) It reads the package and send message, right now i am printing on terminal, we can send email as well to the user.
+
+
+========================================= TASK 4 API Performance and Security ==================================
+
+Question: Outline optimizations and security measures for the API.
+
+
+1) For Req validations i have added DTO for Req/Res for better control on things coming IN going OUT from my server     
+
+2) We can use in-memory cache or Redis/DynamoDB to store frequently used API response.
+
+3) If we have multiple server architecture (auto scaling on BG i:e), we should do for stand alone service for cache like redis
+   Otherwise in case of in-memory we can get wrong data as data will be served form each server, and invalidating that data is hard.
+
+4) To secure the API end points we can use JWT Token, Passport strategy 
+
+5) We can use helmet security headers
+
+6) Allow CROSS ORIGIN to FE IPs only
+
+7) Add rate limiting to mitigate DDOS attacks
+
+8) If applicaiton is region specific allow user requests based on location.
+
+9) For query optimization, adding indexes is necessary, setting read and write replicas for read and write operations respectively can also help in performance
